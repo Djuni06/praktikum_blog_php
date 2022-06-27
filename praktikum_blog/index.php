@@ -1,68 +1,59 @@
+<?php 
+ 
+include 'koneksi.php';
+
+error_reporting(0);
+ 
+session_start();
+
+if (isset($_SESSION['username'])) {
+    header("Location: berhasil_login.php");
+}
+if (isset($_POST['submit'])) {
+    $email = $_POST['email'];
+    $password = md5($_POST['password']);
+    $sql = "SELECT * FROM users WHERE email='$email' AND password='$password'";
+    $result = mysqli_query($conn, $sql);
+    if ($result->num_rows > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $_SESSION['username'] = $row['username'];
+        header("Location: after_login.php");
+    } else {
+        echo "<script>alert('Email atau password Anda salah. Silahkan coba lagi!')</script>";
+    }
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+ 
+    <link rel="stylesheet" type="text/css" href="style.css">
+ 
+    <title>Project Web</title>
 </head>
 <body>
-
-<div class="header">
- <h1>My Blog</h1>
- <p>Let's Share Story</p>
-</div>
+    <div class="alert alert-warning" role="alert">
+        <?php echo $_SESSION['error']?>
+    </div>
  
-<!-- Menampikan kolom sebelah kiri -->
-<div class="row">
- <div class="leftcolumn">
-   <div class="card">
-     <a href="post.php"><h2>HARI PERTAMA</h2></a>
-     <h5>Title description, Dec 7, 2017</h5>
-     <div class="fakeimg" style="height:200px;">Image</div>
-   </div>
-   <div class="card">
-     <a href="post.php"><h2>HARI KEDUA</h2></a>
-     <h5>Title description, Dec 7, 2017</h5>
-     <div class="fakeimg" style="height:200px;">Image</div>
-   </div>
-   <div class="card">
-     <a href="post.php"><h2>HARI KETIGA</h2></a>
-     <h5>Title description, Dec 7, 2017</h5>
-     <div class="fakeimg" style="height:200px;">Image</div>
-   </div>
-   <div class="card">
-     <a href="post.php"><h2>HARI KEEMPAT</h2></a>
-     <h5>Title description, Dec 7, 2017</h5>
-     <div class="fakeimg" style="height:200px;">Image</div>
-   </div>
-   <div class="card">
-     <a href="post.php"><h2>HARI KELIMA</h2></a>
-     <h5>Title description, Dec 7, 2017</h5>
-     <div class="fakeimg" style="height:200px;">Image</div>
-   </div>
- </div>
- 
- <!-- Menampikan kolom sebelah kanan -->
- <div class="rightcolumn">
-   <div class="card">
-     <h2>About Me</h2>
-     <div class="fakeimg" style="height:100px;">Image</div>
-     <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-   </div>
-   <div class="card">
-     <h3>Popular Post</h3>
-     <a href="post.php"><div class="fakeimg"><p>Image</p></div></a>
-     <a href="post.php"><div class="fakeimg"><p>Image</p></div></a>
-     <a href="post.php"><div class="fakeimg"><p>Image</p></div></a>
-   </div>
-   <div class="card">
-     <h3>Follow Me on instagram</h3>
-     <p>@ddjuni_</p>
-   </div>
- </div>
-</div>
-
-<div class="footer">
- <h2></h2>
-</div>
- 
+    <div class="container">
+        <form action="" method="POST" class="login-email">
+            <p class="login-text" style="font-size: 2rem; font-weight: 800;">Login</p>
+            <div class="input-group">
+                <input type="email" placeholder="Email" name="email" value="<?php echo $email; ?>" required>
+            </div>
+            <div class="input-group">
+                <input type="password" placeholder="Password" name="password" value="<?php echo $_POST['password']; ?>" required>
+            </div>
+            <div class="input-group">
+                <button name="submit" class="btn">Login</button>
+            </div>
+            <p class="login-register-text">Anda belum punya akun? <a href="post.php">Get data</a></p>
+        </form>
+    </div>
 </body>
 </html>

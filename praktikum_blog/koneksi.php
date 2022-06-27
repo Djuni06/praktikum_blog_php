@@ -1,13 +1,13 @@
-<?php
-$servername = "localhost";
-$username = "root"; // sesuaikan dengan username db masing-masing
-$password = ""; // sesuaikan dengan password db masing-masing
-$dbname = "blog";
-// Create connection
-$conn = new mysqli($servername, $username, $password ,$dbname);
+<?php 
+$server = "localhost";
+$user = "root";
+$pass = "";
+$database = "db_user";
  
-// Check connection
-if ($conn->connect_error) {
- die("Connection : " . $conn->connect_error);
+$conn = mysqli_connect($server, $user, $pass, $database);
+ 
+if (!$conn) {
+    die("<script>alert('Gagal tersambung dengan database.')</script>");
 }
+ 
 ?>
